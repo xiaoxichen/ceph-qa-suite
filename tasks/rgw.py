@@ -709,7 +709,7 @@ def configure_regions_and_zones(ctx, config, regions, role_endpoints, realm):
                  check_status=True)
 
     rgwadmin(ctx, master_client,
-             cmd=['-n', master_client, 'zone', 'default', zone],
+             cmd=['-n', master_client, 'zone', 'default', master_zone],
              check_status=True)
 
     rgwadmin(ctx, master_client,
