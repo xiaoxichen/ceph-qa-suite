@@ -687,7 +687,7 @@ def configure_regions_and_zones(ctx, config, regions, role_endpoints, realm):
                  check_status=True)
 
     rgwadmin(ctx, master_client,
-             cmd=['-n', master_client, 'zonegroup', 'default', '--rgw-zonegroup', region],
+             cmd=['-n', master_client, 'zonegroup', 'default', '--rgw-zonegroup', master_zonegroup],
              check_status=True)
 
     for role, (zonegroup, zone, zone_info, user_info) in role_zones.iteritems():
@@ -720,14 +720,14 @@ def configure_regions_and_zones(ctx, config, regions, role_endpoints, realm):
         if client != master_client:
             rgwadmin(ctx, client,
                 cmd=['-n', client, 'realm', 'pull', '--rgw-realm', realm, '--url',
-                     region_info[master_region]['info']['endpoints'], '--acess_key',
+                     region_info[master_zonegroup]['info']['endpoints'], '--acess_key',
                      user_info['system_key']['access_key'], '--secret',
                      user_info['system_key']['secret']],
                      check_status=True)
 
             rgwadmin(ctx, client,
                 cmd=['-n', client, 'period', 'pull', '--rgw-realm', realm, '--url',
-                     region_info[master_region]['info']['endpoints'], '--acess_key',
+                     region_info[master_zonegroup]['info']['endpoints'], '--acess_key',
                     user_info['system_key']['access_key'], '--secret',
                     user_info['system_key']['secret']],
                      check_status=True)
