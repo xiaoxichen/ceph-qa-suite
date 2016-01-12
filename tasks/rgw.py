@@ -718,18 +718,21 @@ def configure_regions_and_zones(ctx, config, regions, role_endpoints, realm):
 
     for client in config.iterkeys():
         if client != master_client:
+            host, port = role_endpoints[client]
+            endpoint = 'http://{host}:{port}/'.format(host=host, port=port)
+            log.debug("endpoint: %s"), endpoint
             rgwadmin(ctx, client,
                 cmd=['-n', client, 'realm', 'pull', '--rgw-realm', realm, '--url',
-                     region_info[master_zonegroup]['info']['endpoints'], '--acess_key',
+                     endpoint, '--acess_key',
                      user_info['system_key']['access_key'], '--secret',
-                     user_info['system_key']['secret']],
+                     user_info['system_key']['secret_key']],
                      check_status=True)
 
             rgwadmin(ctx, client,
                 cmd=['-n', client, 'period', 'pull', '--rgw-realm', realm, '--url',
-                     region_info[master_zonegroup]['info']['endpoints'], '--acess_key',
-                    user_info['system_key']['access_key'], '--secret',
-                    user_info['system_key']['secret']],
+                     endpoint, '--acess_key',
+                     user_info['system_key']['access_key'], '--secret',
+                     user_info['system_key']['secret_key']],
                      check_status=True)
 
     yield
