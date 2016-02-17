@@ -1179,7 +1179,7 @@ def task(ctx, config):
             ctx=ctx, config=config, regions=regions),
         ]
 
-    multi_region_run = rgw_utils.multi_region_enabled(ctx)
+    multi_region_run = len(regions) > 1
     log.debug('multi_region_run %s', multi_region_run)
     master_client = None
 
