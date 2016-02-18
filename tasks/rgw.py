@@ -1195,7 +1195,7 @@ def task(ctx, config):
             )
         ])
 
-        master_client = rgw_utils.get_master_client(ctx=ctx, config=config,
+        master_client = rgw_utils.get_master_client(ctx=ctx,
                                                     clients=config.keys())
         log.debug('master_client %r', master_client)
         subtasks.extend([
