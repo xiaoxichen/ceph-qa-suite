@@ -592,6 +592,7 @@ def configure_users_for_client(ctx, config, client, everywhere=False):
     """
     log.info('Configuring users...')
     log.info('for client %s', client)
+    log.info('everywhere %s', everywhere)
     # extract the user info and append it to the payload tuple for the given
     # client
     c_config = config.get(client)
@@ -607,20 +608,21 @@ def configure_users_for_client(ctx, config, client, everywhere=False):
     clients_to_create_as = [client]
     if everywhere:
         clients_to_create_as = config.keys()
-        for client_name in clients_to_create_as:
-            log.debug('Creating user {user} on {client}'.format(
-                user=user_info['system_key']['user'], client=client))
-            rgwadmin(ctx, client_name,
-                     cmd=[
-                         'user', 'create',
-                         '--uid', user_info['system_key']['user'],
-                         '--access-key', user_info['system_key']['access_key'],
-                         '--secret', user_info['system_key']['secret_key'],
-                         '--display-name', user_info['system_key']['user'],
-                         '--system',
-                     ],
-                     check_status=True,
-            )
+
+    for client_name in clients_to_create_as:
+        log.debug('Creating user {user} on {client}'.format(
+            user=user_info['system_key']['user'], client=client_name))
+        rgwadmin(ctx, client_name,
+                 cmd=[
+                     'user', 'create',
+                     '--uid', user_info['system_key']['user'],
+                     '--access-key', user_info['system_key']['access_key'],
+                     '--secret', user_info['system_key']['secret_key'],
+                     '--display-name', user_info['system_key']['user'],
+                     '--system',
+                 ],
+                 check_status=True,
+        )
 
     yield
 
@@ -1227,7 +1229,7 @@ def task(ctx, config):
                 ctx=ctx,
                 config=config,
                 client=master_client,
-                everywhere= bool(regions),
+                everywhere=False,
             ),
         ])
 
@@ -1266,7 +1268,7 @@ def task(ctx, config):
                         ctx=ctx,
                         config=config,
                         client=client,
-                        everywhere=bool(regions)
+                        everywhere=False
                     ),
                 ])
 
@@ -1314,7 +1316,7 @@ def task(ctx, config):
             lambda: configure_users(
                 ctx=ctx,
                 config=config,
-                everywhere=bool(regions),
+                everywhere=True,
             ),
         ])
         if ctx.rgw.frontend == 'apache':
