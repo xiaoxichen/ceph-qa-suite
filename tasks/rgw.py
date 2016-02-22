@@ -201,6 +201,8 @@ def ship_apache_configs(ctx, config, role_endpoints, on_client = None,
                     tdir=testdir,
                     client=client
                 ),
+                '--rgw-frontends',
+                'fastcgi',
             ]
         else:
             rgw_options = [
@@ -257,6 +259,7 @@ def start_rgw(ctx, config, on_client = None, except_client = None):
     """
     log.info('Starting rgw...')
     log.debug('client %r', on_client)
+    log.debug('Except on client %r', except_client)
     clients_to_run = [on_client]
     if on_client is None:
         clients_to_run = config.keys()
@@ -290,7 +293,9 @@ def start_rgw(ctx, config, on_client = None, except_client = None):
                     '{tdir}/apache/tmp.{client}/fastcgi_sock/rgw_sock'.format(
                         tdir=testdir,
                         client=client,
-                        ),
+                    ),
+                    '--rgw-frontends',
+                    'fastcgi',
                 ])
             else:
                 # for mod_proxy_fcgi, using tcp
