@@ -908,11 +908,6 @@ def configure_regions_and_zones(ctx, config, regions, role_endpoints, realm):
                  stdin=StringIO(zone_json),
                  check_status=True)
 
-        (zonegroup, zone, zone_info, user_info) = role_zones[client]
-        rgwadmin(ctx, client,
-                 cmd=['zone', 'default', zone],
-                 check_status=True)
-
         for region, info in region_info.iteritems():
             region_json = json.dumps(info)
             log.debug('region info is: %s', region_json)
@@ -924,6 +919,11 @@ def configure_regions_and_zones(ctx, config, regions, role_endpoints, realm):
                 rgwadmin(ctx, client,
                          cmd=['zonegroup', 'default', '--rgw-zonegroup', master_zonegroup],
                          check_status=True)
+
+        (zonegroup, zone, zone_info, user_info) = role_zones[client]
+        rgwadmin(ctx, client,
+                 cmd=['zone', 'default', zone],
+                 check_status=True)
 
     rgwadmin(ctx, master_client,
              cmd=['-n', master_client, 'period', 'update', '--commit'],
