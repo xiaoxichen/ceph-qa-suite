@@ -46,9 +46,9 @@ def task(ctx, config):
     try:
        get_test_files(config)
        ceph_auth_create(config)
+       setup_libvirtd(config)
        libvirt_set_secret(config)
        create_rbd_image(config)
-       setup_libvirtd(config)
        create_and_define_vm(config)
        migrate_vm(config)
        yield
