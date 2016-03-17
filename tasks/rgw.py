@@ -931,7 +931,7 @@ def configure_regions_and_zones(ctx, config, regions, role_endpoints, realm):
 
         (zonegroup, zone, zone_info, user_info) = role_zones[client]
         rgwadmin(ctx, client,
-                 cmd=['zone', 'default', zone],
+                 cmd=['zone', 'default', master_zone],
                  check_status=True)
 
     rgwadmin(ctx, master_client,
