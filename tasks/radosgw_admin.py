@@ -934,7 +934,7 @@ def task(ctx, config):
 
     (err, out) = rgwadmin(ctx, client,
         ['policy', '--bucket', bucket.name, '--object', key.key],
-        check_status=True)
+                          check_status=True, format='xml')
 
     acl = get_acl(key)
 
