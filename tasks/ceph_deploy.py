@@ -292,6 +292,8 @@ def build_ceph_cluster(ctx, config):
             osd_create_cmd = './ceph-deploy osd create '
             if config.get('dmcrypt') is not None:
                 osd_create_cmd += '--dmcrypt '
+            if config.get('bluestore') is not None:
+                osd_create_cmd += '--bluestore '
             osd_create_cmd += ":".join(d)
             estatus_osd = execute_ceph_deploy(osd_create_cmd)
             if estatus_osd == 0:
@@ -665,6 +667,7 @@ def task(ctx, config):
              branch:
                 testing:
              dmcrypt: yes
+             bluestore: yes
              separate_journal_disk: yes
 
     """
