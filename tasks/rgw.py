@@ -1226,14 +1226,12 @@ def task(ctx, config):
             ctx=ctx, config=config, regions=regions),
         ]
 
-    multi_region_run = len(regions) > 1
-    log.debug('multi_region_run %s', multi_region_run)
-    multi_zone_run = len(zones) > 1
-    log.debug('multi_zone_run %s', multi_zone_run)
+    multi_cluster = len(ctx.config['roles']) > 1
+    log.debug('multi_cluster %s', multi_cluster)
     master_client = None
 
-    if multi_region_run:
-        log.debug('multi_region_run')
+    if multi_cluster:
+        log.debug('multi cluster run')
         master_client = get_config_master_client(ctx=ctx,
                                                  config=config,
                                                  regions=regions)
@@ -1329,7 +1327,7 @@ def task(ctx, config):
             raise ValueError("frontend must be 'apache' or 'civetweb'")
                 
     else:
-        log.debug('non multi_region_run')
+        log.debug('single cluster run')
         subtasks.extend([
             lambda: configure_regions_and_zones(
                 ctx=ctx,
