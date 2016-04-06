@@ -70,6 +70,10 @@ tasks:
       mon.a: null
   - ceph.restart: [mon.a, mon.b, mon.c, osd.0, osd.1]
   - ceph_manager.wait_for_clean: null
+  - ceph_manager.do_pg_scrub:
+      args: ['test', 0, 'scrub']
+- ceph_manager.do_pg_scrub:
+    args: ['test', 0, 'scrub']
 - create_verify_lfn_objects:
     pool: 'test'
     prefix: 'mixed-x'
@@ -81,3 +85,5 @@ tasks:
     name_length: [400, 800, 1600]
 - ceph.restart: [osd.2]
 - ceph_manager.wait_for_clean: null
+- ceph_manager.do_pg_scrub:
+    args: ['test', 0, 'scrub']
